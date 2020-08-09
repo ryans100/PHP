@@ -1,0 +1,190 @@
+<?php
+$con = mysqli_connect("db.sice.indiana.edu","i308f19_team26","my+sql=i308f19_team26","i308f19_team26");
+//check connection
+if(mysqli_connect_errno())
+{echo nl2br "Failed to connect to MySQL:" .mysqli_connect_error(). "<br>";}
+else
+{echo nl2br "Established Database Connection <br>";}
+
+//escape varriables for security sql injection
+$sanfname = mysqli_real_escape_string($con, $_POST['fname']);
+$sanlname = mysqli_real_escape_string($con, $_POST['lname']);
+$sanhometown = mysqli_real_escape_string($con, $_POST['hometown']);
+
+//insert query to insert form data into the band table
+$sql = "Insert Into artist(fname, lname, dob, hometown) Values ('$fname','$lname','$dob','$hometown')";
+//check for error on insert
+if(!mysqli_query($con, $sql))
+{die('Error: ' .mysqli_error($con)). "<br>";}
+
+echo "Artist Added <br>";
+mysqli_close($con);
+?>
+<?php
+
+$con=mysqli_connect("db.sice.indiana.edu","i308f19_team26","my+sql=i308f19_team26","i308f19_team26")
+
+if (mysqli_connect_errno())
+[echo nl2br("Failed to connect to MySQL". mysqli_connect_error());]
+
+$sql="Select * FROM artist";
+$result= mysqli_query($con, $sql);
+
+if (mysqli_num_rows($result))>0{
+	while($row=mysqli_fetch_assoc($result)){
+	echo "name". $row["fname"]. " ". $row["lname"].
+	"dob". $row["dob"].
+	"hometown". $row["hometown"].
+	"<br>";
+	}
+} else {
+	echo "0 results";
+}
+mysqli_close($con);
+?>
+<!doctype html>
+<html>
+
+<head>
+<style>
+table, th, td {
+	border: 2px solid black;
+}
+</style>
+</head>
+<body>
+<?php
+$con = mysqli_connect("db.sice.indiana.edu","i308f19_team26","my+sql=i308f19_team26","i308f19_team26");
+// Check connection
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error() . "<br>");
+}
+else
+{echo "DB Connected <br>";}
+$sql - "Select * FROM album";
+
+    $result = mysqli_query($conn,"SELECT distinct role FROM emp_shift");
+    while ($row = mysqli_fetch_assoc($result)) {
+                  unset($id, $name);
+                  $id = $row['role'];
+                  $name = $row['role']; 
+                  echo '<option value="'.$id.'">'.$name.'</option>';
+}
+?> 
+    </select>
+</br>
+Time of Order: <input type="time" name="form-wtime" required><br>
+<input type="submit" value="Select the Results">
+</form>
+</body>
+</html>
+<?php
+// Create connection
+$con=mysqli_connect("db.sice.indiana.edu","i308f19_team26","my+sql=i308f19_team26","i308f19_team26");
+
+// Check connection
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error()). "<br>";
+}
+else
+{echo "DB Connected <br>" ;}
+
+// Grab POST Data
+$sanpub_year = mysqli_real_escape_string($con, $_POST['pub_year']);
+$santitle = mysqli_real_escape_string($con, $_POST['title']);
+$sanpublisher = mysqli_real_escape_string($con, $_POST['publisher']);
+$sanmedia = mysqli_real_escape_string($con, $_POST['media']);
+$sanbandname = mysqli_real_escape_string($con, $_POST['band']);
+
+$result = mysqli_query($con, "Select id from band where title='$sanbandname'");
+$row = mysqli_fetch_assoc($result);
+$Band_id = $row['id'];
+
+// Create SQL Statement
+$sql = "INSERT INTO album (pub_year, title, publisher, media, Band_id)
+		VALUES ('$sanpub_year', '$santitle', '$sanpublisher', '$sanmedia', '$Band_id')";
+
+
+if (!mysqli_query($con, $sql))
+{ die('Error: ' . mysqli_error($con)). "<br>";}
+
+echo "Record Added <br>";
+
+mysqli_close($con);
+?>
+
+
+
+
+// Display Results
+if ($num_rows > 0) {
+    echo "<table>";
+	echo "<tr><th>albumid</th><th>published_year</th><th>title</th><th>publisher</th><th>format</th><th>bid</th></tr>";
+	
+    // Output data of each row, ->fetch_assoc gives array of arrays with keys matching column names
+    
+    while($row = $result->fetch_assoc()) {
+        echo "<tr><td>".$row["albumid"]."</td><td>".$row["published_year"]."</td><td>".$row["title"]."</td>
+		      <td>".$row["publisher"]."</td><td>".$row["format"]."</td><td>".$row["bid"]."</td></tr>";
+    }
+    echo "</table>";
+} else {
+    echo "0 results <br>";
+}
+echo "$num_rows Rows <br>";
+
+// Close Connection
+mysqli_close($conn);
+?>
+<html>
+<body>
+<h2> Album Table </h2>
+<h3> Insert new Album </h3>
+
+<form action="insertalbum.php" method="POST">
+
+Title: <input type="text" name="title" maxlength="500" size="50" required> <br>
+
+Band: <select name='band'>
+	<option value="beatles">The Beatles </option>
+	<option value="rolling_stones">The Rolling Stones </option>
+	<option value="fleetwood_mac">Fleetwood Mac </option>
+	<option value="queen">Queen</option>
+	<option value="who">The Who</option> <br>
+
+<?php
+$conn= mysqli_connect("db.sice.indiana.edu","i308f19_team26","my+sql=i308f19_team26","i308f19_team26");
+
+if(!$conn){
+	die("connection failed:". mysqli_connect_error());
+}
+	$result= mysqli_query($conn,"Select distinct name From band");
+	while($row=mysqli_fetch_assoc($result)){
+		unset($id, $name);
+		$id = $row['bid'];
+		$name= $row['name'];
+		echo '<option value="'.$id.'">'.$name.'</option>';
+}
+?>
+	</select>
+<br>
+
+Published Year: <input type="number" name="published_year" min="1900" max="2025" required> <br>
+
+Publisher: <input type="text" name="publisher" maxlength="500" size="50" required><br>
+
+Format: <select name='format'>
+	<option value="Vinyl">Vinyl</option>
+	<option value="CD"> CD</option>
+	<option value="Cassette">Cassette</option>
+</select>
+
+<input type="submit" value="Insert Album">
+</form>
+
+<h2>Select all albums</h2>
+<form action="selectalbum.php" method="POST">
+	<input type="submit" name="submit" value="Select Album Table">
+	</form>
+</body>
+</html>
